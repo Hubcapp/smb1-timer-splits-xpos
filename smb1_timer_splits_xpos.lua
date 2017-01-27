@@ -19,7 +19,7 @@ lastLevel = 1;
 
 displayFrameruleCounter = true;
 displayFrameruleOffset = false;
-framerule = 0; --this is the offset manually controlled by players to determine what framerule they're on.
+framerule = 0; --this is the offset manually controlled by players to determine what framerule they're on
 
 displaySplits = true;
 splitY = 8; --y coordinate at which to put the first split
@@ -43,8 +43,8 @@ function formatTimerString(hours, minutes, seconds)
     --Hours
     if hours > 0 then --don't need to display hours at all if we're under 60 minutes
         timerString = timerString .. string.format("%.0f", hours);
-        pixelWidth = pixelWidth + math.floor(math.log10(hours)+1)*6 --we're good until the end of time
-        
+        pixelWidth = pixelWidth + math.floor(math.log10(hours)+1)*6; --we're good until the end of time
+
         if minutes < 10 then
             timerString = timerString .. ":0";
             pixelWidth = pixelWidth + 9;
@@ -90,7 +90,7 @@ while true do
     end;
     ---- toggle framerule counter
     if input.get().F4 and keyPressed == false then
-        displayFrameRuleCounter = not(displayFrameRuleCounter);
+        displayFrameruleCounter = not(displayFrameruleCounter);
         keyPressed = true;
     end;
     ---- display splits
@@ -110,16 +110,32 @@ while true do
     end;
     if keyPressed == true then
         if input.get().F4 then
-            gui.text(0,100,"toggled framerule counter");
+            if displayFrameruleCounter then
+                gui.text(0,timerY-8,"fr counter on");
+            else
+                gui.text(0,timerY-8,"fr counter off");
+            end;
         end;
         if input.get().F6 then
-            gui.text(0,100,"toggled splits");
+            if displaySplits then
+                gui.text(0,timerY-8,"splits on");
+            else
+                gui.text(0,timerY-8,"splits off");
+            end;
         end;
         if input.get().F8 then
-            gui.text(0,100,"toggled xpos");
+            if displayXpos then
+                gui.text(0,timerY-8,"xpos on");
+            else
+                gui.text(0,timerY-8,"xpos off");
+            end;
         end;
         if input.get().F9 then
-            gui.text(0,100,"toggled framerule offset");
+            if displayFrameruleOffset then
+                gui.text(0,timerY-8,"fr offset on");
+            else
+                gui.text(0,timerY-8,"fr offset off");
+            end;
         end;
     end;
     ---- release key press
@@ -128,7 +144,6 @@ while true do
     end;
 
     --game related variables
-
     state = memory.readbyte(0x0770); --0 = title screen, 1 = playing the game, 2 = rescued toad/peach, 3 = you're dead
     --framerule = memory.readbyte(0x077F); --value between 0 and 20
     curFramerule = math.floor(movie.framecount()/21.0);
@@ -137,12 +152,12 @@ while true do
     level = memory.readbyte(0x0760)+1;
     if (level > 2 and (world == 1 or world == 2 or world == 4 or world == 7)) then --the cute animation where you go into a pipe before starting the level counts as a level internally
         level = level - 1; --for worlds with that cutscene, we have to subtract off that cutscene level
-    end
+    end;
 
     --player related variables
     xpos = memory.readbyte(0x03AD); --number of pixels between mario (or luigi...) and the left side of the screen
     --xsub = memory.readbyte(0x0400); --current subpixel
-    lives = memory.readbyte(0x075A)+1;   
+    lives = memory.readbyte(0x075A)+1;
 
     -- set timer start frame
     if startFrame == -1 and world == 1 and level == 1 and gameTimer == 400 then --on title screen, values are world 1-1, gameTimer 401. when timer goes to 400, we've started the timer and don't need to set it again until game over or console reset
@@ -163,36 +178,36 @@ while true do
         noContinue = true;
     end;
 
-    -- (player resets the console) or (player game overs and doesn't continue), need to reset 
+    -- (player resets the console) or (player game overs and doesn't continue), need to reset
     if movie.framecount() == 0 or noContinue then
-            seconds = 0; minutes = 0; hours = 0;
-            finalSeconds = 0; finalMinutes = 0; finalHours = 0;
-            bowser8 = false;
-            hitAxe = false;
-            once = false;
-            gameOver = false;
-            noContinue = false;
-            startFrame = -1;
-            splitArray = {};
-            worldArray = {};
-            gui.text(0,0,"");
-    end; 
+        seconds = 0; minutes = 0; hours = 0;
+        finalSeconds = 0; finalMinutes = 0; finalHours = 0;
+        bowser8 = false;
+        hitAxe = false;
+        once = false;
+        gameOver = false;
+        noContinue = false;
+        startFrame = -1;
+        splitArray = {};
+        worldArray = {};
+        gui.text(0,0,"");
+    end;
 
     -- display framerules elapsed
     if displayFrameruleCounter then
-        gui.text(0,timerY,curFramerule); --this is probably not useful. People determine their current frame rule relative to their splits usually.
+        gui.text(0,timerY,curFramerule); --this is probably not useful. People determine their current frame rule relative to their splits usually
     end;
     
     -- display manual framerule offset
     if displayFrameruleOffset then
         if framerule > 0.001 then
-          gui.text(timerX-25-6,timerY-8,"+"..string.format("%1.2f",framerule));
+            gui.text(timerX-25-6,timerY-8,"+"..string.format("%1.2f",framerule));
         end;
         if framerule < -0.001 then
-          gui.text(timerX-25-5,timerY-8,string.format("%1.2f",framerule));
+            gui.text(timerX-25-5,timerY-8,string.format("%1.2f",framerule));
         end;
         if framerule < 0.001 and framerule > -0.001 then
-          gui.text(timerX-25,timerY-8,"0.00");
+            gui.text(timerX-25,timerY-8,"0.00");
         end;
     end;
     
@@ -210,7 +225,7 @@ while true do
             end;
         end;
     end;
-    
+
     -- display mario's xpos for wrong warp on 4-2
     if displayXpos then
         if (world == 4 and level == 2) then
@@ -223,7 +238,7 @@ while true do
             gui.text(guiX, 24,  xpos);
         end;
     end;
-    
+
     -- stop timer
     ----detect if bowser is on the screen and you are in world 8
     if world == 8 then
@@ -259,6 +274,7 @@ while true do
         end;
     end;
 
+    --detect split
     if world ~= lastWorld or level ~= lastLevel then
         timerString = formatTimerString(hours,minutes,seconds);
         if state == 1 then
