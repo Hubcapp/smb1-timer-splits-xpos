@@ -75,57 +75,57 @@ end;
 
 
 while true do
-	--toggle optional overlays
-	--these may or may not work on windows, but they do not work on linux as of 2.2.2. Just edit the variables at the top, except for manual splits which won't work without user input.
-	--if you want to remap these keys, a list of valid key names is available at http://www.fceux.com/web/help/fceux.html?LuaFunctionsList.html (ctrl-F "leftbracket")
-	---- manually adjust your framerule offset
-	if input.get().leftbracket and keyPressed == false then
-		framerule = framerule + 0.35;
-		keyPressed = true;
+    --toggle optional overlays
+    --these may or may not work on windows, but they do not work on linux as of 2.2.2. Just edit the variables at the top, except for manual splits which won't work without user input.
+    --if you want to remap these keys, a list of valid key names is available at http://www.fceux.com/web/help/fceux.html?LuaFunctionsList.html (ctrl-F "leftbracket")
+    ---- manually adjust your framerule offset
+    if input.get().leftbracket and keyPressed == false then
+        framerule = framerule + 0.35;
+        keyPressed = true;
     end;
     ---- manually adjust your framerule offset
     if input.get().rightbracket and keyPressed == false then
-		framerule = framerule - 0.35;
-		keyPressed = true;
+        framerule = framerule - 0.35;
+        keyPressed = true;
     end;
     ---- toggle framerule counter
     if input.get().F4 and keyPressed == false then
-		displayFrameRuleCounter = not(displayFrameRuleCounter);
-		keyPressed = true;
+        displayFrameRuleCounter = not(displayFrameRuleCounter);
+        keyPressed = true;
     end;
     ---- display splits
     if input.get().F6 and keyPressed == false then
-		displaySplits = not(displaySplits);
-		keyPressed = true;
+        displaySplits = not(displaySplits);
+        keyPressed = true;
     end;
     ---- display xpos on 4-2
-	if input.get().F8 and keyPressed == false then
-		displayXpos = not(displayXpos);
-		keyPressed = true;
+    if input.get().F8 and keyPressed == false then
+        displayXpos = not(displayXpos);
+        keyPressed = true;
     end;
     ---- display manual framerule offset
-	if input.get().F9 and keyPressed == false then
-		displayFrameruleOffset = not(displayFrameruleOffset);
-		keyPressed = true;
+    if input.get().F9 and keyPressed == false then
+        displayFrameruleOffset = not(displayFrameruleOffset);
+        keyPressed = true;
     end;
     if keyPressed == true then
-		if input.get().F4 then
-			gui.text(0,100,"toggled framerule counter");
-		end;
-		if input.get().F6 then
-			gui.text(0,100,"toggled splits");
-		end;
-		if input.get().F8 then
-			gui.text(0,100,"toggled xpos");
-		end;
-		if input.get().F9 then
-			gui.text(0,100,"toggled framerule offset");
-		end;
+        if input.get().F4 then
+            gui.text(0,100,"toggled framerule counter");
+        end;
+        if input.get().F6 then
+            gui.text(0,100,"toggled splits");
+        end;
+        if input.get().F8 then
+            gui.text(0,100,"toggled xpos");
+        end;
+        if input.get().F9 then
+            gui.text(0,100,"toggled framerule offset");
+        end;
     end;
     ---- release key press
-	if not(input.get().leftbracket) and not(input.get().rightbracket) and not(input.get().F4) and not(input.get().F6) and not(input.get().F8) and not (input.get().F9) then
-		keyPressed = false;
-	end;
+    if not(input.get().leftbracket) and not(input.get().rightbracket) and not(input.get().F4) and not(input.get().F6) and not(input.get().F8) and not (input.get().F9) then
+        keyPressed = false;
+    end;
 
     --game related variables
 
@@ -178,61 +178,61 @@ while true do
             gui.text(0,0,"");
     end; 
 
-	-- display framerules elapsed
-	if displayFrameruleCounter then
-		gui.text(0,timerY,curFramerule); --this is probably not useful. People determine their current frame rule relative to their splits usually.
-	end;
-	
-	-- display manual framerule offset
-	if displayFrameruleOffset then
-		if framerule > 0.001 then
-		  gui.text(timerX-25-6,timerY-8,"+"..string.format("%1.2f",framerule));
-		end;
-		if framerule < -0.001 then
-		  gui.text(timerX-25-5,timerY-8,string.format("%1.2f",framerule));
-		end;
-		if framerule < 0.001 and framerule > -0.001 then
-		  gui.text(timerX-25,timerY-8,"0.00");
-		end;
-	end;
-	
+    -- display framerules elapsed
+    if displayFrameruleCounter then
+        gui.text(0,timerY,curFramerule); --this is probably not useful. People determine their current frame rule relative to their splits usually.
+    end;
+    
+    -- display manual framerule offset
+    if displayFrameruleOffset then
+        if framerule > 0.001 then
+          gui.text(timerX-25-6,timerY-8,"+"..string.format("%1.2f",framerule));
+        end;
+        if framerule < -0.001 then
+          gui.text(timerX-25-5,timerY-8,string.format("%1.2f",framerule));
+        end;
+        if framerule < 0.001 and framerule > -0.001 then
+          gui.text(timerX-25,timerY-8,"0.00");
+        end;
+    end;
+    
     -- display splits
     if displaySplits then
-		if #splitArray > splitsToDisplay then
-			for i=#splitArray-splitsToDisplay+1,#splitArray do --draw splitsToDisplay splits
-				gui.text(0,splitY+(i-#splitArray+splitsToDisplay)*8,worldArray[i] .. " ");
-				gui.text(20,splitY+(i-#splitArray+splitsToDisplay)*8,splitArray[i]);
-			end;
-		else
-			for i=1,#splitArray do --just draw as many splits as we have
-				gui.text(0,splitY+i*8,worldArray[i] .. " ");
-				gui.text(20,splitY+i*8,splitArray[i]);
-			end;
-		end;
-	end;
+        if #splitArray > splitsToDisplay then
+            for i=#splitArray-splitsToDisplay+1,#splitArray do --draw splitsToDisplay splits
+                gui.text(0,splitY+(i-#splitArray+splitsToDisplay)*8,worldArray[i] .. " ");
+                gui.text(20,splitY+(i-#splitArray+splitsToDisplay)*8,splitArray[i]);
+            end;
+        else
+            for i=1,#splitArray do --just draw as many splits as we have
+                gui.text(0,splitY+i*8,worldArray[i] .. " ");
+                gui.text(20,splitY+i*8,splitArray[i]);
+            end;
+        end;
+    end;
     
     -- display mario's xpos for wrong warp on 4-2
     if displayXpos then
-		if (world == 4 and level == 2) then
-			if (xpos < 100) then
-				guiX = 239;
-			else
-				guiX = 236;
-			end;
-			gui.text(235, 16, "xpos");
-			gui.text(guiX, 24,  xpos);
-		end;
-	end;
-	
+        if (world == 4 and level == 2) then
+            if (xpos < 100) then
+                guiX = 239;
+            else
+                guiX = 236;
+            end;
+            gui.text(235, 16, "xpos");
+            gui.text(guiX, 24,  xpos);
+        end;
+    end;
+    
     -- stop timer
     ----detect if bowser is on the screen and you are in world 8
-	if world == 8 then
-		for i=0,5 do
-			if memory.readbyte((0x0016)+i) == 0x2d then
-				bowser8 = true;
-			end;
-		end;
-	end;
+    if world == 8 then
+        for i=0,5 do
+            if memory.readbyte((0x0016)+i) == 0x2d then
+                bowser8 = true;
+            end;
+        end;
+    end;
 
     ----detect if you hit the axe on 8-4 and lock the timer's value
     if bowser8 and memory.readbyte(0x01ED) == 242 and xpos > 210 and once == false then
@@ -260,9 +260,9 @@ while true do
     end;
 
     if world ~= lastWorld or level ~= lastLevel then
-		timerString = formatTimerString(hours,minutes,seconds);
+        timerString = formatTimerString(hours,minutes,seconds);
         if state == 1 then
-			splitArray[#splitArray + 1] = timerString[2];
+            splitArray[#splitArray + 1] = timerString[2];
             if lastState ~= 0 then
                 worldArray[#worldArray + 1] = lastWorld .. "-" .. lastLevel;
             else
