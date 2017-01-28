@@ -14,6 +14,7 @@ finalSeconds = 0; finalMinutes = 0; finalHours = 0;
 startFrame = -1;
 gameOver = false;
 noContinue = false;
+levelChanged = false;
 lastWorld = 1;
 lastLevel = 1;
 
@@ -275,12 +276,19 @@ while true do
     end;
 
     --detect split
-    if world ~= lastWorld or level ~= lastLevel then
+    if levelChanged == false then
+        levelChanged = (world ~= lastWorld or level ~= lastLevel); --true if just level changes basically, not aware of any warp zone that warps from x-z to y-z, and the ends of worlds always goes from x-4 to y-1
+        splitWorld = lastWorld;
+        splitLevel = lastLevel;
+        splitState = lastState
+    end;
+    if levelChanged and memory.readbyte(0x0772) == 2 then --0772 == 2 makes it split after the level's title screen when going into a warp pipe
+        levelChanged = false;
         timerString = formatTimerString(hours,minutes,seconds);
         if state == 1 then
             splitArray[#splitArray + 1] = timerString[2];
-            if lastState ~= 0 then
-                worldArray[#worldArray + 1] = lastWorld .. "-" .. lastLevel;
+            if splitState ~= 0 then
+                worldArray[#worldArray + 1] = splitWorld .. "-" .. splitLevel;
             else
                 worldArray[#worldArray + 1] = world .. "-C"; --game continue
                 gameOver = false;
