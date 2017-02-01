@@ -86,6 +86,7 @@ personalBests = {
 };
 --]]
 
+--[[
 --2017 my sum of bests
 personalBests = {
 {2158,2102,0,0}, -- W1, {1-1,1-2,1-3,1-4}
@@ -97,6 +98,7 @@ personalBests = {
 {0,0,0,0}, -- W7
 {3605,0,0,0}  -- W8
 };
+--]]
 
 --if it matters to you, every split actually happens 5 frames after the framerule rolls over from 20 back to 0 (except for 8-4)
 
